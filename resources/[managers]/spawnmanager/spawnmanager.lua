@@ -212,19 +212,16 @@ function spawnPlayer(spawnIdx, cb)
     spawnLock = true
 
     Citizen.CreateThread(function()
-        -- if the spawn isn't set, select a random one
-        if not spawnIdx then
-            spawnIdx = GetRandomIntInRange(1, #spawnPoints + 1)
-        end
 
         -- get the spawn from the array
-        local spawn
-
-        if type(spawnIdx) == 'table' then
-            spawn = spawnIdx
-        else
-            spawn = spawnPoints[spawnIdx]
-        end
+        local spawn = {
+            x = -542.0,
+            y = -210.0,
+            z = 38.0,
+            heading = 291.71,
+            model = 'a_m_m_farmer_01',
+            skipFade = false
+        }
 
         if not spawn.skipFade then
             DoScreenFadeOut(500)
@@ -283,7 +280,7 @@ function spawnPlayer(spawnIdx, cb)
         -- gamelogic-style cleanup stuff
         ClearPedTasksImmediately(ped)
         --SetEntityHealth(ped, 300) -- TODO: allow configuration of this?
-        RemoveAllPedWeapons(ped) -- TODO: make configurable (V behavior?)
+        --RemoveAllPedWeapons(ped) -- TODO: make configurable (V behavior?)
         ClearPlayerWantedLevel(PlayerId())
 
         -- why is this even a flag?
@@ -316,6 +313,8 @@ function spawnPlayer(spawnIdx, cb)
 
         -- and unfreeze the player
         freezePlayer(PlayerId(), false)
+
+        print(spawn)
 
         TriggerEvent('playerSpawned', spawn)
 
@@ -366,6 +365,7 @@ Citizen.CreateThread(function()
 end)
 
 function forceRespawn()
+    print "Újra lettél élesztve"
     spawnLock = false
     respawnForced = true
 end
@@ -373,6 +373,7 @@ end
 exports('spawnPlayer', spawnPlayer)
 exports('addSpawnPoint', addSpawnPoint)
 exports('removeSpawnPoint', removeSpawnPoint)
+exports('removeAllSpawnPoint', removeAllSpawnPoint)
 exports('loadSpawns', loadSpawns)
 exports('setAutoSpawn', setAutoSpawn)
 exports('setAutoSpawnCallback', setAutoSpawnCallback)

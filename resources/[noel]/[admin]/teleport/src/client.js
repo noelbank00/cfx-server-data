@@ -26,10 +26,8 @@ RegisterCommand('goto', async (source, args, raw) => {
 			return;
 		}
 
-		console.log('Here');
 
 		let waypointCoords = GetBlipInfoIdCoord(WaypointHandle);
-		console.log(waypointCoords[0]);
 		for(let i = 5; i < 1000; i++) {
 			SetPedCoordsKeepVehicle(PlayerPedId(), waypointCoords[0], waypointCoords[1], i + 0.0);
 			
